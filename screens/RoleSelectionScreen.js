@@ -44,7 +44,7 @@ const RoleSelectionScreen = ({ navigation }) => {
       {/* Signup link */}
       <TouchableOpacity
         style={styles.signupLink}
-        onPress={() => navigation.navigate('Signup')}
+        onPress={() => navigation.navigate('Sign up')}
       >
         <Text style={styles.signupLinkText}>Need an account? Sign up now</Text>
       </TouchableOpacity>

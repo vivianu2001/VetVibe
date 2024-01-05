@@ -5,6 +5,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RoleSelectionScreen from './screens/RoleSelectionScreen';
 import PetOwnerLoginScreen from './screens/PetOwnerLoginScreen';
 import VeterinarianLoginScreen from './screens/VeterinarianLoginScreen';
+import SignupScreen from './screens/SignupScreen';
+import PetOwnerSign from './screens/PetOwnerSign';
+import VeterinarianSign from './screens/VeterinarianSign';
 
 
 const Stack = createStackNavigator();
@@ -16,6 +19,9 @@ const App = () => {
         <Stack.Screen name="Login" component={RoleSelectionScreen} />
         <Stack.Screen name="Pet Owner" component={PetOwnerLoginScreen} />
         <Stack.Screen name="Veterinarian" component={VeterinarianLoginScreen} />
+        <Stack.Screen name="Sign up" component={SignupScreen} />
+        <Stack.Screen name="Sign up Owner" component={PetOwnerSign} />
+        <Stack.Screen name="Sign up Veterinarian" component={VeterinarianSign} />
 
         {/* Add more screens as needed */}
       </Stack.Navigator>
