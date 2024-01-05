@@ -12,9 +12,9 @@ const RoleSelectionScreen = ({ navigation }) => {
     setSelectedRole(role);
 
     if (role === 'PetOwner') {
-      navigation.navigate('PetOwnerLoginScreen');
+      navigation.navigate('Pet Owner');
     } else if (role === 'Veterinarian') {
-      navigation.navigate('VeterinarianLoginScreen');
+      navigation.navigate('Veterinarian');
     }
     // Add more conditions for other roles if needed
   };
@@ -30,13 +30,13 @@ const RoleSelectionScreen = ({ navigation }) => {
       {/* Login buttons for Pet Owner and Veterinarian */}
       <TouchableOpacity
         style={[styles.button, { backgroundColor: '#ff8c00' }]} // Beautiful orange color
-        onPress={() => navigation.navigate('PetOwnerLoginScreen')}
+        onPress={() => navigation.navigate('Pet Owner')}
       >
         <Text style={styles.buttonText}>Login as Pet Owner</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: '#ff8c00' }]} // Beautiful orange color
-        onPress={() => navigation.navigate('VeterinarianLoginScreen')}
+        onPress={() => navigation.navigate('Veterinarian')}
       >
         <Text style={styles.buttonText}>Login as Veterinarian</Text>
       </TouchableOpacity>
