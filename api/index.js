@@ -77,3 +77,39 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ message: "Login failed" });
   }
 });
+
+// Endpoint to register a veterinarian
+const Veterinarian = require("./models/veterinarian");
+
+app.post("/registerVeterinarian", async (req, res) => {
+  try {
+    const { name, vetId, password, phoneNumber } = req.body;
+    const existingV = await Veterinarian.findOne({ vetId });
+
+    if (existingV) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    // Create a new veterinarian user
+    const newVeterinarian = new Veterinarian({
+      name,
+      vetId,
+      password,
+      phoneNumber,
+    });
+
+    // Generate and store the verification token (if needed)
+    newVeterinarian.verificationToken = crypto.randomBytes(20).toString("hex");
+
+    // Save the new veterinarian to the database
+    await newVeterinarian.save();
+
+    // Send a response indicating successful registration
+    res
+      .status(201)
+      .json({ message: "Registration successful for veterinarian" });
+  } catch (error) {
+    console.log("Error registering veterinarian", error);
+    res.status(500).json({ message: "Error registering veterinarian" });
+  }
+});

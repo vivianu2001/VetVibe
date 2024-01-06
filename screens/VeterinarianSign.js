@@ -1,26 +1,45 @@
 // VeterinarianSign.js
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import axios from "axios";
 
 const VeterinarianSign = ({ navigation }) => {
-  const [name, setName] = useState('');
-  const [vetId, setVetId] = useState('');
-  const [password, setPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [name, setName] = useState("");
+  const [vetId, setVetId] = useState("");
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleSignup = () => {
-    // Implement your Veterinarian signup logic here
-    // For example, you might use Firebase Auth, your server, or other authentication services
+    // Make an Axios request to register the veterinarian
+    const veterinarian = {
+      name: name,
+      vetId: vetId,
+      password: password,
+      phoneNumber: phoneNumber,
+    };
 
-    // Dummy logic for demonstration purposes
-    if (name && vetId && password && phoneNumber) {
-      // Veterinarian signup successful
-      // Navigate to Veterinarian home screen or perform any other actions
-      navigation.navigate('VeterinarianHomeScreen');
-    } else {
-      // Handle signup error (show an alert, etc.)
-      console.error('Invalid registration information');
-    }
+    axios
+      .post("http://localhost:3000/registerVeterinarian", veterinarian)
+      .then((response) => {
+        console.log(response.data);
+        Alert.alert("Registration successful for veterinarian");
+        setName("");
+        setVetId("");
+        setPassword("");
+        setPhoneNumber("");
+        navigation.navigate("VeterinarianHomeScreen");
+      })
+      .catch((error) => {
+        console.error("Error registering veterinarian", error);
+        Alert.alert("Registration failed for veterinarian");
+      });
   };
 
   return (
@@ -62,16 +81,16 @@ const VeterinarianSign = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
     padding: 8,
     marginVertical: 10,
-    width: '80%',
+    width: "80%",
   },
 });
 
