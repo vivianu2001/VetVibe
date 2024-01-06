@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Image, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  StyleSheet,
+} from "react-native";
 
 // Import the paw image
-import PawImage from '/Users/vivi/VetVibe/assets/paw.jpg';
-
+import PawImage from "/Users/vivi/VetVibe/assets/paw.jpg";
 
 const RoleSelectionScreen = ({ navigation }) => {
   const [selectedRole, setSelectedRole] = useState(null);
@@ -11,10 +17,10 @@ const RoleSelectionScreen = ({ navigation }) => {
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
 
-    if (role === 'PetOwner') {
-      navigation.navigate('Pet Owner');
-    } else if (role === 'Veterinarian') {
-      navigation.navigate('Veterinarian');
+    if (role === "PetOwner") {
+      navigation.navigate("Pet Owner");
+    } else if (role === "Veterinarian") {
+      navigation.navigate("Veterinarian");
     }
     // Add more conditions for other roles if needed
   };
@@ -29,14 +35,14 @@ const RoleSelectionScreen = ({ navigation }) => {
 
       {/* Login buttons for Pet Owner and Veterinarian */}
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: '#ff8c00' }]} // Beautiful orange color
-        onPress={() => navigation.navigate('Pet Owner')}
+        style={[styles.button, { backgroundColor: "#ff8c00" }]} // Beautiful orange color
+        onPress={() => navigation.navigate("Pet Owner")}
       >
         <Text style={styles.buttonText}>Login as Pet Owner</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: '#ff8c00' }]} // Beautiful orange color
-        onPress={() => navigation.navigate('Veterinarian')}
+        style={[styles.button, { backgroundColor: "#ff8c00" }]} // Beautiful orange color
+        onPress={() => navigation.navigate("Veterinarian")}
       >
         <Text style={styles.buttonText}>Login as Veterinarian</Text>
       </TouchableOpacity>
@@ -44,7 +50,7 @@ const RoleSelectionScreen = ({ navigation }) => {
       {/* Signup link */}
       <TouchableOpacity
         style={styles.signupLink}
-        onPress={() => navigation.navigate('Sign up')}
+        onPress={() => navigation.navigate("Sign up")}
       >
         <Text style={styles.signupLinkText}>Need an account? Sign up now</Text>
       </TouchableOpacity>
@@ -55,18 +61,18 @@ const RoleSelectionScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
   },
   header: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 180,
   },
   title: {
     fontSize: 40,
-    color: '#333333',
+    color: "#333333",
     marginTop: 10,
   },
   pawImage: {
@@ -74,30 +80,30 @@ const styles = StyleSheet.create({
     height: 100,
   },
   button: {
-    backgroundColor: '#ff8c00', 
+    backgroundColor: "#ff8c00",
     padding: 15,
     borderRadius: 8,
     marginBottom: 25,
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
   },
   loginButton: {
-    backgroundColor: '#ff8c00',
+    backgroundColor: "#ff8c00",
     padding: 15,
     borderRadius: 8,
     marginTop: 20,
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
   },
   signupLink: {
     marginTop: 20,
   },
   signupLinkText: {
-    color: '#3498db', 
+    color: "#3498db",
     fontSize: 16,
   },
 });

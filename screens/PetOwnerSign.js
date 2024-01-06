@@ -31,7 +31,7 @@ const PetOwnerSign = ({ navigation }) => {
         setName("");
         setEmail("");
         setPassword("");
-        navigation.navigate('PetownerHomeScreen');
+        navigation.navigate("PetownerHomeScreen");
       })
       .catch((error) => {
         Alert.alert("Registers failed");
