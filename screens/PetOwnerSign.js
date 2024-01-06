@@ -1,26 +1,42 @@
 // PetOwnerSign.js
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import { Alert } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 
 const PetOwnerSign = ({ navigation }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSignup = () => {
-    // Implement your Pet Owner signup logic
+    const user = {
+      name: name,
+      email: email,
+      password: password,
+    };
 
-    // Dummy logic for demonstration purposes
-    if (name && email && password) {
-      // Pet Owner signup successful
-      // Navigate to Pet Owner home screen or perform any other actions
-      navigation.navigate('PetOwnerHomeScreen');
-    } else {
-      // Handle signup error (show an alert, etc.)
-      console.error('Invalid registration information');
-    }
+    axios
+      .post("http://localhost:3000/register", user)
+      .then((response) => {
+        console.log(response);
+        Alert.alert("Registration successfull");
+        setName("");
+        setEmail("");
+        setPassword("");
+      })
+      .catch((error) => {
+        Alert.alert("Registers failed");
+        console.log("error", error);
+      });
   };
-
   return (
     <View style={styles.container}>
       <Text>Register as Pet Owner</Text>
@@ -53,16 +69,16 @@ const PetOwnerSign = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
     padding: 8,
     marginVertical: 10,
-    width: '80%',
+    width: "80%",
   },
 });
 
