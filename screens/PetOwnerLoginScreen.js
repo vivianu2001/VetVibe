@@ -1,14 +1,32 @@
 // PetOwnerLoginScreen.js
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 const PetOwnerLoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
   const handleLogin = () => {
-    // Implement your authentication logic for pet owners using email and password
-    // For example, you might use Firebase Auth, your own server, or other authentication services.
+    const user = {
+      email: email,
+      password: password,
+    };
+    axios
+      .post("http://localhost:3000/login", user)
+      .then((response) => {
+        console.log(response);
+        const token = response.data.token;
+        AsyncStorage.setItem("authToken", token);
+        navigation.navigate("Pet Owner Home Screen");
+      })
+      .catch((error) => {
+        Alert.alert("Login error");
+        console.log("error", error);
+      });
   };
 
   return (
