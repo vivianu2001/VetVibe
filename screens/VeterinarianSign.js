@@ -1,4 +1,3 @@
-// VeterinarianSign.js
 import React, { useState } from "react";
 import {
   View,
@@ -16,8 +15,9 @@ const VeterinarianSign = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
+  // Function to handle veterinarian signup
   const handleSignup = () => {
-    // Make an Axios request to register the veterinarian
+    // Create a veterinarian object with the entered information
     const veterinarian = {
       name: name,
       vetId: vetId,
@@ -25,23 +25,29 @@ const VeterinarianSign = ({ navigation }) => {
       phoneNumber: phoneNumber,
     };
 
+    // Make an Axios request to register the veterinarian
     axios
       .post("http://localhost:3000/registerVeterinarian", veterinarian)
       .then((response) => {
         console.log(response.data);
+        // Show an alert for successful registration
         Alert.alert("Registration successful for veterinarian");
+        // Clear input fields
         setName("");
         setVetId("");
         setPassword("");
         setPhoneNumber("");
+        // Navigate to "VeterinarianHomeScreen"
         navigation.navigate("VeterinarianHomeScreen");
       })
       .catch((error) => {
         console.error("Error registering veterinarian", error);
+        // Show an alert for failed registration and log the error
         Alert.alert("Registration failed for veterinarian");
       });
   };
 
+  // Render the veterinarian signup screen UI
   return (
     <View style={styles.container}>
       <Text>Register as Veterinarian</Text>
@@ -78,6 +84,7 @@ const VeterinarianSign = ({ navigation }) => {
   );
 };
 
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -94,4 +101,5 @@ const styles = StyleSheet.create({
   },
 });
 
+// Export the VeterinarianSign component
 export default VeterinarianSign;

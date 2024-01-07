@@ -1,4 +1,3 @@
-// PetOwnerSign.js
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { Alert } from "react-native";
@@ -16,6 +15,7 @@ const PetOwnerSign = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Function to handle user signup
   const handleSignup = () => {
     const user = {
       name: name,
@@ -23,21 +23,28 @@ const PetOwnerSign = ({ navigation }) => {
       password: password,
     };
 
+    // Send a signup request to the server
     axios
       .post("http://localhost:3000/register", user)
       .then((response) => {
         console.log(response);
-        Alert.alert("Registration successfull");
+        // Show an alert for successful registration
+        Alert.alert("Registration successful");
+        // Clear input fields
         setName("");
         setEmail("");
         setPassword("");
+        // Navigate to "PetownerHomeScreen"
         navigation.navigate("PetownerHomeScreen");
       })
       .catch((error) => {
-        Alert.alert("Registers failed");
-        console.log("error", error);
+        // Show an alert for failed registration and log the error
+        Alert.alert("Registration failed");
+        console.log("Error during registration", error);
       });
   };
+
+  // Render the signup screen UI
   return (
     <View style={styles.container}>
       <Text>Register as Pet Owner</Text>
@@ -67,6 +74,7 @@ const PetOwnerSign = ({ navigation }) => {
   );
 };
 
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -83,4 +91,5 @@ const styles = StyleSheet.create({
   },
 });
 
+// Export the PetOwnerSign component
 export default PetOwnerSign;

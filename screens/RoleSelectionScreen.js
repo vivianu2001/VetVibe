@@ -14,6 +14,7 @@ import PawImage from "/Users/vivi/VetVibe/assets/paw.jpg";
 const RoleSelectionScreen = ({ navigation }) => {
   const [selectedRole, setSelectedRole] = useState(null);
 
+  // Function to handle role selection and navigate to the corresponding screen
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
 
@@ -35,14 +36,14 @@ const RoleSelectionScreen = ({ navigation }) => {
 
       {/* Login buttons for Pet Owner and Veterinarian */}
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: "#ff8c00" }]} // Beautiful orange color
-        onPress={() => navigation.navigate("Pet Owner")}
+        style={[styles.button, { backgroundColor: "#ff8c00" }]} // orange color
+        onPress={() => handleRoleSelection("PetOwner")}
       >
         <Text style={styles.buttonText}>Login as Pet Owner</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: "#ff8c00" }]} // Beautiful orange color
-        onPress={() => navigation.navigate("Veterinarian")}
+        style={[styles.button, { backgroundColor: "#ff8c00" }]} // orange color
+        onPress={() => handleRoleSelection("Veterinarian")}
       >
         <Text style={styles.buttonText}>Login as Veterinarian</Text>
       </TouchableOpacity>
