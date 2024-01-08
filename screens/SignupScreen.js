@@ -12,12 +12,12 @@ const SignupScreen = ({ navigation }) => {
   const [selectedRole, setSelectedRole] = useState(null);
   const [id, setId] = useState("");
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     // Implement your signup logic here
     if (selectedRole === "Veterinarian") {
+      const isIdValid = await checkDatabaseForId(id);
       // Check the database for the entered ID
       // You can use Firebase, a server, or any other method for verification
-      const isIdValid = checkDatabaseForId(id);
 
       if (isIdValid) {
         // ID is valid, navigate to the appropriate screen
@@ -33,11 +33,16 @@ const SignupScreen = ({ navigation }) => {
     }
   };
 
-  const checkDatabaseForId = (enteredId) => {
-    // Simulate a database check for the entered ID
-    // Replace this with your actual database verification logic
-    const validIds = ["vet123", "vet456", "vet789"];
-    return validIds.includes(enteredId);
+  const checkDatabaseForId = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/checkVetId/${id}`);
+      const data = await response.json();
+      return data.isValid;
+    } catch (error) {
+      console.error("Error checking vet ID:", error);
+      // Handle the error as needed
+      return false;
+    }
   };
 
   return (

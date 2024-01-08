@@ -94,6 +94,54 @@ app.post("/login", async (req, res) => {
 
 // Import the Veterinarian model
 const Veterinarian = require("./models/veterinarian");
+// Endpoint to handle veterinarian login
+app.post("/loginv", async (req, res) => {
+  try {
+    const { vetId, password } = req.body;
+    const veterinarian = await Veterinarian.findOne({ vetId });
+
+    if (!veterinarian) {
+      return res.status(404).json({ message: "Invalid id" });
+    }
+
+    if (veterinarian.password !== password) {
+      return res.status(404).json({ message: "Invalid password" });
+    }
+
+    // Sign a JWT token with the user's ID and the secret key
+    const token = jwt.sign({ userId: veterinarian._id }, secretKey);
+
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(500).json({ message: "Login failed" });
+  }
+});
+
+// Endpoint to check if a vet ID is valid
+// Get the collection
+app.get("/checkVetId/:id", async (req, res) => {
+  try {
+    const enteredVetId = req.params.id;
+
+    // Check if the vet ID exists in the VetId collection
+    const vetIdCollection =
+      mongoose.connection.db.collection("VeterinarianIDs");
+
+    // Check if the vet ID exists in the collection
+    const existingVetId = await vetIdCollection.findOne({
+      vetId: enteredVetId,
+    });
+
+    if (existingVetId) {
+      res.json({ isValid: true });
+    } else {
+      res.json({ isValid: false });
+    }
+  } catch (error) {
+    console.error("Error checking vet ID:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Endpoint to register a veterinarian
 app.post("/registerVeterinarian", async (req, res) => {
