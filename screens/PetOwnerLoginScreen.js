@@ -9,26 +9,26 @@ const PetOwnerLoginScreen = () => {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
-  // useEffect hook to check the login status when the component mounts
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        // Check if there is an authToken stored in AsyncStorage
-        const token = await AsyncStorage.getItem("authToken");
-        if (token) {
-          // If authToken exists, replace the screen with "Pet Owner Home Screen" after a delay
-          setTimeout(() => {
-            navigation.replace("Pet Owner Home Screen");
-          }, 400);
-        }
-      } catch (error) {
-        console.log("Error checking login status", error);
-      }
-    };
+  // // useEffect hook to check the login status when the component mounts
+  // useEffect(() => {
+  //   const checkLoginStatus = async () => {
+  //     try {
+  //       // Check if there is an authToken stored in AsyncStorage
+  //       const token = await AsyncStorage.getItem("authToken");
+  //       if (token) {
+  //         // If authToken exists, replace the screen with "Pet Owner Home Screen" after a delay
+  //         setTimeout(() => {
+  //           navigation.replace("Pet Owner Home Screen");
+  //         }, 400);
+  //       }
+  //     } catch (error) {
+  //       console.log("Error checking login status", error);
+  //     }
+  //   };
 
-    // Call the checkLoginStatus function
-    checkLoginStatus();
-  }, []); // Empty dependency array ensures the effect runs only once after mount
+  //   // Call the checkLoginStatus function
+  //   checkLoginStatus();
+  // }, []); // Empty dependency array ensures the effect runs only once after mount
 
   // Function to handle user login
   const handleLogin = () => {

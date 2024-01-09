@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// VeterinarianSign.js
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,11 +10,18 @@ import {
 } from "react-native";
 import axios from "axios";
 
-const VeterinarianSign = ({ navigation }) => {
+const VeterinarianSign = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [vetId, setVetId] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+
+  // useEffect to set the vetId from the route parameters
+  useEffect(() => {
+    if (route.params && route.params.vetId) {
+      setVetId(route.params.vetId);
+    }
+  }, [route.params]);
 
   // Function to handle veterinarian signup
   const handleSignup = () => {
@@ -60,8 +68,9 @@ const VeterinarianSign = ({ navigation }) => {
       <TextInput
         placeholder="Veterinarian ID"
         value={vetId}
-        onChangeText={setVetId}
+        onChangeText={setVetId} // Allow changing vetId if needed
         style={styles.input}
+        editable={false} // Disable editing vetId in this screen
       />
       <TextInput
         placeholder="Password"

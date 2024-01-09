@@ -11,19 +11,19 @@ import {
 const SignupScreen = ({ navigation }) => {
   const [selectedRole, setSelectedRole] = useState(null);
   const [id, setId] = useState("");
+  const [isIdValid, setIsIdValid] = useState(false); // State to track ID validation
 
   const handleSignup = async () => {
     // Implement your signup logic here
     if (selectedRole === "Veterinarian") {
-      const isIdValid = await checkDatabaseForId(id);
-      // Check the database for the entered ID
-      // You can use Firebase, a server, or any other method for verification
+      const validId = await checkDatabaseForId(id);
 
-      if (isIdValid) {
+      if (validId) {
         // ID is valid, navigate to the appropriate screen
-        navigation.navigate("Sign up Veterinarian");
+        navigation.navigate("Sign up Veterinarian", { vetId: id });
       } else {
-        // ID is not valid, handle accordingly (show an alert, etc.)
+        // ID is not valid, set state and handle accordingly
+        setIsIdValid(false);
         console.error("Invalid ID");
       }
     } else {
@@ -37,7 +37,12 @@ const SignupScreen = ({ navigation }) => {
     try {
       const response = await fetch(`http://localhost:3000/checkVetId/${id}`);
       const data = await response.json();
-      return data.isValid;
+      const isValid = data.isValid;
+
+      // Set the validation state
+      setIsIdValid(isValid);
+
+      return isValid;
     } catch (error) {
       console.error("Error checking vet ID:", error);
       // Handle the error as needed
@@ -58,12 +63,19 @@ const SignupScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       {selectedRole === "Veterinarian" && (
-        <TextInput
-          placeholder="Enter your ID"
-          value={id}
-          onChangeText={setId}
-          style={styles.input}
-        />
+        <View>
+          <TextInput
+            placeholder="Enter your ID"
+            value={id}
+            onChangeText={setId}
+            style={styles.input}
+          />
+          {isIdValid !== null && (
+            <Text style={{ color: isIdValid ? "green" : "red" }}>
+              {isIdValid ? "Valid ID" : "Invalid ID"}
+            </Text>
+          )}
+        </View>
       )}
 
       <TouchableOpacity onPress={handleSignup}>
