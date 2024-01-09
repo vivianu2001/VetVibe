@@ -62,12 +62,12 @@ const PetOwnerSign = ({ navigation }) => {
         quality: 1,
       });
 
-      if (!result.cancelled) {
+      if (!result.canceled) {
         // Set the selected image URI to the profile picture state
         if (result.assets && result.assets.length > 0) {
           const selectedAsset = result.assets[0];
 
-          setProfilePicture(result.uri);
+          setProfilePicture(selectedAsset.uri);
         }
       }
     } else {
