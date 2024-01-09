@@ -70,11 +70,6 @@ const SignupScreen = ({ navigation }) => {
             onChangeText={setId}
             style={styles.input}
           />
-          {isIdValid !== null && (
-            <Text style={{ color: isIdValid ? "green" : "red" }}>
-              {isIdValid ? "Valid ID" : "Invalid ID"}
-            </Text>
-          )}
         </View>
       )}
 
