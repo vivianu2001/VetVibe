@@ -37,7 +37,7 @@ const User = require("./models/user");
 // Endpoint to register a user
 app.post("/register", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, profilePicture } = req.body;
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -45,7 +45,7 @@ app.post("/register", async (req, res) => {
     }
 
     // Create a new user
-    const newUser = new User({ name, email, password });
+    const newUser = new User({ name, email, password, profilePicture });
 
     // Generate and store the verification token
     newUser.verificationToken = crypto.randomBytes(20).toString("hex");
@@ -150,7 +150,7 @@ app.post("/registerVeterinarian", async (req, res) => {
     const existingV = await Veterinarian.findOne({ vetId });
 
     if (existingV) {
-      return res.status(400).json({ message: "Email already registered" });
+      return res.status(400).json({ message: "vet ID already registered" });
     }
 
     // Create a new veterinarian user

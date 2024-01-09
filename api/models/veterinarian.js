@@ -22,6 +22,7 @@ const veterinarianSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
   },
+  
   // Date when the veterinarian joined (default to the current date and time)
   joinedDate: {
     type: Date,

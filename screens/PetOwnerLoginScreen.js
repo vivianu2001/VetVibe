@@ -56,7 +56,7 @@ const PetOwnerLoginScreen = () => {
   // Render the login screen UI
   return (
     <View style={styles.container}>
-      <Text>Pet Owner Login</Text>
+      <Text>Welcome back</Text>
       <TextInput
         placeholder="Email"
         value={email}

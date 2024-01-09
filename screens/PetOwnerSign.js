@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import { Alert } from "react-native";
+import { Alert, Image } from "react-native"; // Import Image component
 import React, { useState } from "react";
 import {
   View,
@@ -9,11 +9,13 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 
 const PetOwnerSign = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null);
 
   // Function to handle user signup
   const handleSignup = () => {
@@ -21,6 +23,7 @@ const PetOwnerSign = ({ navigation }) => {
       name: name,
       email: email,
       password: password,
+      profilePicture: profilePicture,
     };
 
     // Send a signup request to the server
@@ -34,6 +37,7 @@ const PetOwnerSign = ({ navigation }) => {
         setName("");
         setEmail("");
         setPassword("");
+        setProfilePicture(null);
         // Navigate to "PetownerHomeScreen"
         navigation.navigate("PetownerHomeScreen");
       })
@@ -42,6 +46,36 @@ const PetOwnerSign = ({ navigation }) => {
         Alert.alert("Registration failed");
         console.log("Error during registration", error);
       });
+  };
+
+  // Function to handle profile picture selection
+  const pickProfilePicture = async () => {
+    // Request permission to access the device's photo library
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status === "granted") {
+      // Launch the image picker
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.cancelled) {
+        // Set the selected image URI to the profile picture state
+        if (result.assets && result.assets.length > 0) {
+          const selectedAsset = result.assets[0];
+
+          setProfilePicture(result.uri);
+        }
+      }
+    } else {
+      Alert.alert(
+        "Permission denied",
+        "Permission to access the photo library was denied."
+      );
+    }
   };
 
   // Render the signup screen UI
@@ -54,6 +88,15 @@ const PetOwnerSign = ({ navigation }) => {
         onChangeText={setName}
         style={styles.input}
       />
+
+      {/* Display the selected profile picture */}
+      {profilePicture && (
+        <Image source={{ uri: profilePicture }} style={styles.profilePicture} />
+      )}
+
+      <TouchableOpacity onPress={pickProfilePicture}>
+        <Text>Select Profile Picture</Text>
+      </TouchableOpacity>
       <TextInput
         placeholder="Email"
         value={email}
@@ -88,6 +131,12 @@ const styles = StyleSheet.create({
     padding: 8,
     marginVertical: 10,
     width: "80%",
+  },
+  profilePicture: {
+    width: 100,
+    height: 100,
+    marginVertical: 10,
+    borderRadius: 50, // Set borderRadius to make it round
   },
 });
 

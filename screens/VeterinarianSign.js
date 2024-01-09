@@ -9,7 +9,6 @@ import {
   Alert,
 } from "react-native";
 import axios from "axios";
-
 const VeterinarianSign = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [vetId, setVetId] = useState("");
