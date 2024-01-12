@@ -146,7 +146,7 @@ app.get("/checkVetId/:id", async (req, res) => {
 // Endpoint to register a veterinarian
 app.post("/registerVeterinarian", async (req, res) => {
   try {
-    const { name, vetId, password, phoneNumber } = req.body;
+    const { name, vetId, password, phoneNumber, profilePicture } = req.body;
     const existingV = await Veterinarian.findOne({ vetId });
 
     if (existingV) {
@@ -159,6 +159,7 @@ app.post("/registerVeterinarian", async (req, res) => {
       vetId,
       password,
       phoneNumber,
+      profilePicture,
     });
 
     // Generate and store the verification token (if needed)

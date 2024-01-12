@@ -22,7 +22,11 @@ const veterinarianSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
   },
-  
+  // User's profile picture URL
+  profilePicture: {
+    type: String,
+  },
+
   // Date when the veterinarian joined (default to the current date and time)
   joinedDate: {
     type: Date,

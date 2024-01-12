@@ -7,13 +7,16 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Image,
 } from "react-native";
 import axios from "axios";
+import * as ImagePicker from "expo-image-picker";
 const VeterinarianSign = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [vetId, setVetId] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null);
 
   // useEffect to set the vetId from the route parameters
   useEffect(() => {
@@ -30,6 +33,7 @@ const VeterinarianSign = ({ navigation, route }) => {
       vetId: vetId,
       password: password,
       phoneNumber: phoneNumber,
+      profilePicture: profilePicture,
     };
 
     // Make an Axios request to register the veterinarian
@@ -44,6 +48,7 @@ const VeterinarianSign = ({ navigation, route }) => {
         setVetId("");
         setPassword("");
         setPhoneNumber("");
+        setProfilePicture(null);
         // Navigate to "VeterinarianHomeScreen"
         navigation.navigate("VeterinarianHomeScreen");
       })
@@ -52,6 +57,35 @@ const VeterinarianSign = ({ navigation, route }) => {
         // Show an alert for failed registration and log the error
         Alert.alert("Registration failed for veterinarian");
       });
+  };
+  // Function to handle profile picture selection
+  const pickProfilePicture = async () => {
+    // Request permission to access the device's photo library
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status === "granted") {
+      // Launch the image picker
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        // Set the selected image URI to the profile picture state
+        if (result.assets && result.assets.length > 0) {
+          const selectedAsset = result.assets[0];
+
+          setProfilePicture(selectedAsset.uri);
+        }
+      }
+    } else {
+      Alert.alert(
+        "Permission denied",
+        "Permission to access the photo library was denied."
+      );
+    }
   };
 
   // Render the veterinarian signup screen UI
@@ -64,6 +98,14 @@ const VeterinarianSign = ({ navigation, route }) => {
         onChangeText={setName}
         style={styles.input}
       />
+      {/* Display the selected profile picture */}
+      {profilePicture && (
+        <Image source={{ uri: profilePicture }} style={styles.profilePicture} />
+      )}
+
+      <TouchableOpacity onPress={pickProfilePicture}>
+        <Text>Select Profile Picture</Text>
+      </TouchableOpacity>
       <TextInput
         placeholder="Veterinarian ID"
         value={vetId}
@@ -106,6 +148,12 @@ const styles = StyleSheet.create({
     padding: 8,
     marginVertical: 10,
     width: "80%",
+  },
+  profilePicture: {
+    width: 100,
+    height: 100,
+    marginVertical: 10,
+    borderRadius: 50, // Set borderRadius to make it round
   },
 });
 
