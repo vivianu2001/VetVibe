@@ -143,37 +143,58 @@ app.get("/checkVetId/:id", async (req, res) => {
   }
 });
 
-// Endpoint to register a veterinarian
-app.post("/registerVeterinarian", async (req, res) => {
+// Fetch vet information
+app.get("/veterinarian/:vetId", async (req, res) => {
   try {
-    const { name, vetId, password, phoneNumber, profilePicture } = req.body;
-    const existingV = await Veterinarian.findOne({ vetId });
+    const vetId = req.params.vetId;
+    const veterinarian = await Veterinarian.findOne({ vetId });
+    if (!veterinarian) {
+      return res.status(404).json({ message: "Veterinarian not found" });
+    }
+    res.status(200).json(veterinarian);
+  } catch (error) {
+    console.error("Error fetching vet information", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+// In your server.js or routes file
 
-    if (existingV) {
-      return res.status(400).json({ message: "vet ID already registered" });
+// Update vet tips
+app.post("/veterinarian/tips/:vetId", async (req, res) => {
+  try {
+    const vetId = req.params.vetId;
+    const { title, content } = req.body;
+    
+    const veterinarian = await Veterinarian.findOne({ vetId });
+    if (!veterinarian) {
+      return res.status(404).json({ message: "Veterinarian not found" });
     }
 
-    // Create a new veterinarian user
-    const newVeterinarian = new Veterinarian({
-      name,
-      vetId,
-      password,
-      phoneNumber,
-      profilePicture,
-    });
-
-    // Generate and store the verification token (if needed)
-    newVeterinarian.verificationToken = crypto.randomBytes(20).toString("hex");
-
-    // Save the new veterinarian to the database
-    await newVeterinarian.save();
-
-    // Send a response indicating successful registration
-    res
-      .status(201)
-      .json({ message: "Registration successful for veterinarian" });
+    veterinarian.tips.push({ title, content });
+    await veterinarian.save();
+    res.status(200).json({ message: "Tips added successfully" });
   } catch (error) {
-    console.log("Error registering veterinarian", error);
-    res.status(500).json({ message: "Error registering veterinarian" });
+    console.error("Error adding tips", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Update vet availability
+app.post("/veterinarian/availability/:vetId", async (req, res) => {
+  try {
+    const vetId = req.params.vetId;
+    const { canHelpNow, location } = req.body;
+    
+    const veterinarian = await Veterinarian.findOne({ vetId });
+    if (!veterinarian) {
+      return res.status(404).json({ message: "Veterinarian not found" });
+    }
+
+    veterinarian.availability = { canHelpNow, location };
+    await veterinarian.save();
+    res.status(200).json({ message: "Availability updated successfully" });
+  } catch (error) {
+    console.error("Error updating availability", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });

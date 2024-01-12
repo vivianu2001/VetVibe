@@ -45,7 +45,10 @@ const VeterinarianLoginScreen = () => {
         // If login is successful, store authToken in AsyncStorage and navigate to "Pet Owner Home Screen"
         const token = response.data.token;
         AsyncStorage.setItem("authToken", token);
-        navigation.navigate("Veterinarian Home Screen");
+        // In VeterinarianLoginScreen.js after successful login
+        navigation.navigate("Veterinarian Home Screen", {
+          vetId: vetId,
+        });
       })
       .catch((error) => {
         // If login fails, show an alert and log the error
