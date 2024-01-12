@@ -50,7 +50,7 @@ const VeterinarianSign = ({ navigation, route }) => {
         setPhoneNumber("");
         setProfilePicture(null);
         // Navigate to "VeterinarianHomeScreen"
-        navigation.navigate("VeterinarianHomeScreen");
+        navigation.navigate("Veterinarian Home Screen");
       })
       .catch((error) => {
         console.error("Error registering veterinarian", error);
