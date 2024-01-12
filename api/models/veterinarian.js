@@ -32,6 +32,28 @@ const veterinarianSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  rate: {
+    type: Number,
+    default: 0,
+  },
+  about: {
+    type: String,
+  },
+  tips: [
+    {
+      title: String,
+      content: String,
+    },
+  ],
+  availability: {
+    canHelpNow: {
+      type: Boolean,
+      default: false,
+    },
+    location: {
+      type: String,
+    },
+  },
 });
 
 // Create a mongoose model named "Veterinarian" based on the veterinarian schema
