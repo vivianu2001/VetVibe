@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, Alert, StyleSheet } from "react-native";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 const VeterinarianHomeScreen = ({ route }) => {
   const { vetId } = route.params || {};
@@ -10,11 +11,12 @@ const VeterinarianHomeScreen = ({ route }) => {
     tips: [],
     availability: { canHelpNow: false, location: "" },
   });
+  const navigation = useNavigation();
+
   useEffect(() => {
     const fetchVetInformation = async () => {
       try {
         if (!vetId) {
-          // Handle the case when vetId is undefined
           console.error("Veterinarian ID is undefined");
           return;
         }
@@ -33,6 +35,37 @@ const VeterinarianHomeScreen = ({ route }) => {
     fetchVetInformation();
   }, [vetId]);
 
+  const goToEditProfile = () => {
+    navigation.navigate("Veterinarian Edit Profile Screen", { vetId });
+  };
+
+  const updateAvailability = async () => {
+    try {
+      const newAvailability = {
+        canHelpNow: !vetData.availability.canHelpNow,
+        location: "New Location",
+      };
+
+      setVetData((prevState) => ({
+        ...prevState,
+        availability: newAvailability,
+      }));
+
+      await axios.post(
+        `http://localhost:3000/veterinarian/availability/${vetId}`,
+        newAvailability
+      );
+
+      Alert.alert(
+        "Availability Updated",
+        "Your availability has been updated successfully"
+      );
+    } catch (error) {
+      console.error("Error updating availability", error);
+      Alert.alert("Error", "Failed to update availability. Please try again.");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome, Veterinarian!</Text>
@@ -49,6 +82,10 @@ const VeterinarianHomeScreen = ({ route }) => {
       <View style={styles.infoContainer}>
         <Text style={styles.label}>Location:</Text>
         <Text style={styles.info}>{vetData.availability.location}</Text>
+      </View>
+      <View style={styles.container}>
+        <Button title="Edit Profile" onPress={goToEditProfile} />
+        <Button title="Update Availability" onPress={updateAvailability} />
       </View>
       <View style={styles.tipsContainer}>
         <Text style={styles.tipsTitle}>Tips:</Text>

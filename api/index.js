@@ -157,7 +157,6 @@ app.get("/veterinarian/:vetId", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-// In your server.js or routes file
 
 // Update vet tips
 app.post("/veterinarian/tips/:vetId", async (req, res) => {
@@ -195,6 +194,87 @@ app.post("/veterinarian/availability/:vetId", async (req, res) => {
     res.status(200).json({ message: "Availability updated successfully" });
   } catch (error) {
     console.error("Error updating availability", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+  
+});
+// Update veterinarian name
+app.put("/veterinarian/:vetId/name", async (req, res) => {
+  try {
+    const vetId = req.params.vetId;
+    const { name } = req.body;
+
+    const veterinarian = await Veterinarian.findOne({ vetId });
+    if (!veterinarian) {
+      return res.status(404).json({ message: "Veterinarian not found" });
+    }
+
+    if (name) veterinarian.name = name;
+    await veterinarian.save();
+
+    res.status(200).json({ message: "Name updated successfully" });
+  } catch (error) {
+    console.error("Error updating name", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+// Update veterinarian password
+app.put("/veterinarian/:vetId/password", async (req, res) => {
+  try {
+    const vetId = req.params.vetId;
+    const { password } = req.body;
+
+    const veterinarian = await Veterinarian.findOne({ vetId });
+    if (!veterinarian) {
+      return res.status(404).json({ message: "Veterinarian not found" });
+    }
+
+    if (password) veterinarian.password = password;
+    await veterinarian.save();
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Error updating password", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+// Update veterinarian profile picture
+app.put("/veterinarian/:vetId/profilePicture", async (req, res) => {
+  try {
+    const vetId = req.params.vetId;
+    const { profilePicture } = req.body;
+
+    const veterinarian = await Veterinarian.findOne({ vetId });
+    if (!veterinarian) {
+      return res.status(404).json({ message: "Veterinarian not found" });
+    }
+
+    if (profilePicture) veterinarian.profilePicture = profilePicture;
+    await veterinarian.save();
+
+    res.status(200).json({ message: "Profile picture updated successfully" });
+  } catch (error) {
+    console.error("Error updating profile picture", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+// Update veterinarian about
+app.put("/veterinarian/:vetId/about", async (req, res) => {
+  try {
+    const vetId = req.params.vetId;
+    const { about } = req.body;
+
+    const veterinarian = await Veterinarian.findOne({ vetId });
+    if (!veterinarian) {
+      return res.status(404).json({ message: "Veterinarian not found" });
+    }
+
+    if (about) veterinarian.about = about;
+    await veterinarian.save();
+
+    res.status(200).json({ message: "About updated successfully" });
+  } catch (error) {
+    console.error("Error updating about", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
