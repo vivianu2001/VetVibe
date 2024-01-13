@@ -13,6 +13,7 @@ import VeterinarianHomeScreen from "./screens/VeterinarianHomeScreen";
 import PetProfileScreen from "./screens/ PetProfileScreen";
 import EditPetProfileScreen from "./screens/EditPetProfileScreen";
 import VeterinarianEditProfile from "./screens/VeterinarianEditProfile";
+import AddTipScreen from "./screens/AddTipScreen";
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,7 @@ const App = () => {
           name="Veterinarian Edit Profile Screen"
           component={VeterinarianEditProfile}
         />
+        <Stack.Screen name="Add Tip Screen" component={AddTipScreen} />
         <Stack.Screen name="Sign up" component={SignupScreen} />
         <Stack.Screen name="Sign up Owner" component={PetOwnerSign} />
         <Stack.Screen

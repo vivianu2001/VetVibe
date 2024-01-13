@@ -143,20 +143,6 @@ app.get("/checkVetId/:id", async (req, res) => {
   }
 });
 
-// Fetch vet information
-app.get("/veterinarian/:vetId", async (req, res) => {
-  try {
-    const vetId = req.params.vetId;
-    const veterinarian = await Veterinarian.findOne({ vetId });
-    if (!veterinarian) {
-      return res.status(404).json({ message: "Veterinarian not found" });
-    }
-    res.status(200).json(veterinarian);
-  } catch (error) {
-    console.error("Error fetching vet information", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
 
 // Update vet tips
 app.post("/veterinarian/tips/:vetId", async (req, res) => {

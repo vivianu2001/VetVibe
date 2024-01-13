@@ -1,6 +1,6 @@
 // VeterinarianHomeScreen.js
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, Alert, StyleSheet } from "react-native";
+import { View, Text, Button, Alert, StyleSheet, TextInput } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
@@ -11,27 +11,32 @@ const VeterinarianHomeScreen = ({ route }) => {
     tips: [],
     availability: { canHelpNow: false, location: "" },
   });
+  const [newTip, setNewTip] = useState({
+    title: "",
+    content: "",
+  });
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const fetchVetInformation = async () => {
-      try {
-        if (!vetId) {
-          console.error("Veterinarian ID is undefined");
-          return;
-        }
-
-        const response = await axios.get(
-          `http://localhost:3000/veterinarian/${vetId}`
-        );
-        const vetData = response.data;
-        setVetData(vetData);
-      } catch (error) {
-        console.error("Error fetching vet information", error);
-        console.log("Axios response:", error.response);
+  const fetchVetInformation = async () => {
+    try {
+      if (!vetId) {
+        console.error("Veterinarian ID is undefined");
+        return;
       }
-    };
 
+      const response = await axios.get(
+        `http://localhost:3000/veterinarian/${vetId}`
+      );
+      const vetData = response.data;
+      setVetData(vetData);
+    } catch (error) {
+      console.error("Error fetching vet information", error);
+      console.log("Axios response:", error.response);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch veterinarian information when the component mounts
     fetchVetInformation();
   }, [vetId]);
 
@@ -66,6 +71,11 @@ const VeterinarianHomeScreen = ({ route }) => {
     }
   };
 
+  const addNewTip = () => {
+    // Navigate to the "AddTip" screen and pass the fetchVetInformation function as a parameter
+    navigation.navigate("Add Tip Screen", { vetId });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome, Veterinarian!</Text>
@@ -96,12 +106,7 @@ const VeterinarianHomeScreen = ({ route }) => {
           </View>
         ))}
       </View>
-      <Button
-        title="Add Tip"
-        onPress={() => {
-          // Implement the logic to add a tip
-        }}
-      />
+      <Button title="Add Tip" onPress={addNewTip} />
     </View>
   );
 };
@@ -143,6 +148,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 4,
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 8,
+    padding: 8,
   },
 });
 
