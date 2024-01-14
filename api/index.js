@@ -325,7 +325,9 @@ app.put("/veterinarian/tips/:vetId/:tipId", async (req, res) => {
       return res.status(404).json({ message: "Veterinarian not found" });
     }
 
-    const tipIndex = veterinarian.tips.findIndex(tip => tip._id.toString() === tipId);
+    const tipIndex = veterinarian.tips.findIndex(
+      (tip) => tip._id.toString() === tipId
+    );
     if (tipIndex === -1) {
       return res.status(404).json({ message: "Tip not found" });
     }
@@ -338,6 +340,26 @@ app.put("/veterinarian/tips/:vetId/:tipId", async (req, res) => {
     res.status(200).json({ message: "Tip updated successfully" });
   } catch (error) {
     console.error("Error updating tip", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+// Update veterinarian phone number
+app.put("/veterinarian/:vetId/phoneNumber", async (req, res) => {
+  try {
+    const vetId = req.params.vetId;
+    const { phoneNumber } = req.body;
+
+    const veterinarian = await Veterinarian.findOne({ vetId });
+    if (!veterinarian) {
+      return res.status(404).json({ message: "Veterinarian not found" });
+    }
+
+    if (phoneNumber) veterinarian.phoneNumber = phoneNumber;
+    await veterinarian.save();
+
+    res.status(200).json({ message: "Phone number updated successfully" });
+  } catch (error) {
+    console.error("Error updating phone number", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });

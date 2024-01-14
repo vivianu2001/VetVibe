@@ -19,6 +19,7 @@ const VeterinarianEditProfile = ({ route, navigation }) => {
     password: "",
     profilePicture: "",
     about: "",
+    phoneNumber: "",
   });
 
   useEffect(() => {
@@ -43,6 +44,27 @@ const VeterinarianEditProfile = ({ route, navigation }) => {
     fetchVetInformation();
   }, [vetId]);
 
+  const updatePhoneNumber = async (newPhoneNumber) => {
+    try {
+      await axios.put(
+        `http://localhost:3000/veterinarian/${vetId}/phoneNumber`,
+        {
+          phoneNumber: newPhoneNumber,
+        }
+      );
+
+      // Handle success, show an alert, etc.
+      Alert.alert(
+        "Phone Number Updated",
+        "Your phone number has been updated successfully"
+      );
+    } catch (error) {
+      console.error("Error updating phone number:", error);
+      // Handle error, show an alert, etc.
+      Alert.alert("Error", "Failed to update phone number. Please try again.");
+    }
+  };
+
   const pickProfilePicture = async () => {
     try {
       const { status } =
@@ -57,10 +79,8 @@ const VeterinarianEditProfile = ({ route, navigation }) => {
         });
 
         if (!result.canceled && result.assets && result.assets.length > 0) {
-          // Access the selected asset from the assets array
           const selectedAsset = result.assets[0];
 
-          // Use a callback function to ensure the state is updated correctly
           setVetData((prevData) => ({
             ...prevData,
             profilePicture: selectedAsset.uri,
@@ -98,6 +118,7 @@ const VeterinarianEditProfile = ({ route, navigation }) => {
       Alert.alert(`Error`, `Failed to update ${field}. Please try again.`);
     }
   };
+
   const saveProfilePicture = async () => {
     try {
       const updatedData = {
@@ -121,6 +142,7 @@ const VeterinarianEditProfile = ({ route, navigation }) => {
       );
     }
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Edit Profile</Text>
@@ -162,10 +184,20 @@ const VeterinarianEditProfile = ({ route, navigation }) => {
         onChangeText={(text) => setVetData({ ...vetData, about: text })}
       />
 
+      <TextInput
+        style={styles.input}
+        placeholder="Phone Number"
+        value={vetData.phoneNumber}
+        onChangeText={(text) => setVetData({ ...vetData, phoneNumber: text })}
+      />
+
       <Button title="Save Name" onPress={() => saveChanges("name")} />
       <Button title="Save Password" onPress={() => saveChanges("password")} />
       <Button title="Save About" onPress={() => saveChanges("about")} />
-      <Button title="Save Profile Picture" onPress={saveProfilePicture} />
+      <Button
+        title="Save Phone Number"
+        onPress={() => updatePhoneNumber(vetData.phoneNumber)}
+      />
     </View>
   );
 };
