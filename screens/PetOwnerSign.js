@@ -19,7 +19,7 @@ const PetOwnerSign = ({ navigation }) => {
 
   // Function to handle user signup
   const handleSignup = () => {
-    const user = {
+    const owner = {
       name: name,
       email: email,
       password: password,
@@ -28,7 +28,7 @@ const PetOwnerSign = ({ navigation }) => {
 
     // Send a signup request to the server
     axios
-      .post("http://localhost:3000/register", user)
+      .post("http://localhost:3000/register", owner)
       .then((response) => {
         console.log(response);
         // Show an alert for successful registration

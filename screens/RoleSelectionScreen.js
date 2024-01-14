@@ -19,11 +19,10 @@ const RoleSelectionScreen = ({ navigation }) => {
     setSelectedRole(role);
 
     if (role === "PetOwner") {
-      navigation.navigate("Pet Owner");
+      navigation.navigate("Pet Owner Login");
     } else if (role === "Veterinarian") {
-      navigation.navigate("Veterinarian");
+      navigation.navigate("Veterinarian Login");
     }
-    // Add more conditions for other roles if needed
   };
 
   return (

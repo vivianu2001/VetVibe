@@ -22,7 +22,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={RoleSelectionScreen} />
-        <Stack.Screen name="Pet Owner" component={PetOwnerLoginScreen} />
+        <Stack.Screen name="Pet Owner Login" component={PetOwnerLoginScreen} />
         <Stack.Screen
           name="Pet Owner Home Screen"
           component={PetOwnerHomeScreen}
@@ -33,7 +33,10 @@ const App = () => {
           component={EditPetProfileScreen}
         />
 
-        <Stack.Screen name="Veterinarian" component={VeterinarianLoginScreen} />
+        <Stack.Screen
+          name="Veterinarian Login"
+          component={VeterinarianLoginScreen}
+        />
         <Stack.Screen
           name="Veterinarian Home Screen"
           component={VeterinarianHomeScreen}

@@ -15,10 +15,10 @@ const jwt = require("jsonwebtoken");
 
 // Connect to MongoDB
 mongoose
-  .connect("mongodb+srv://vivianu2014:vivi123m@cluster1.6ieglfk.mongodb.net/", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    "mongodb+srv://vivianu2014:vivi123m@cluster1.6ieglfk.mongodb.net/",
+    {}
+  )
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -32,26 +32,26 @@ app.listen(port, () => {
 });
 
 // Import the User model
-const User = require("./models/user");
+const User = require("./models/pet_owner");
 
 // Endpoint to register a user
 app.post("/register", async (req, res) => {
   try {
     const { name, email, password, profilePicture } = req.body;
-    const existingUser = await User.findOne({ email });
+    const existingOwner = await PetOwner.findOne({ email });
 
-    if (existingUser) {
+    if (existingOwner) {
       return res.status(400).json({ message: "Email already registered" });
     }
 
     // Create a new user
-    const newUser = new User({ name, email, password, profilePicture });
+    const newOwner = new PetOwner({ name, email, password, profilePicture });
 
     // Generate and store the verification token
-    newUser.verificationToken = crypto.randomBytes(20).toString("hex");
+    newOwner.verificationToken = crypto.randomBytes(20).toString("hex");
 
     // Save the new user to the database
-    await newUser.save();
+    await newOwner.save();
 
     res.status(201).json({ message: "Registration successful" });
   } catch (error) {
@@ -73,18 +73,18 @@ const secretKey = generateSecretKey();
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const owner = await PetOwner.findOne({ email });
 
-    if (!user) {
+    if (!owner) {
       return res.status(404).json({ message: "Invalid email" });
     }
 
-    if (user.password !== password) {
+    if (owner.password !== password) {
       return res.status(404).json({ message: "Invalid password" });
     }
 
     // Sign a JWT token with the user's ID and the secret key
-    const token = jwt.sign({ userId: user._id }, secretKey);
+    const token = jwt.sign({ userId: owner._id }, secretKey);
 
     res.status(200).json({ token });
   } catch (error) {
@@ -94,6 +94,7 @@ app.post("/login", async (req, res) => {
 
 // Import the Veterinarian model
 const Veterinarian = require("./models/veterinarian");
+const PetOwner = require("./models/pet_owner");
 // Endpoint to handle veterinarian login
 app.post("/loginv", async (req, res) => {
   try {
@@ -142,7 +143,40 @@ app.get("/checkVetId/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+// Endpoint to register a veterinarian
 
+app.post("/registerVeterinarian", async (req, res) => {
+  try {
+    const { name, vetId, password, phoneNumber } = req.body;
+    const existingV = await Veterinarian.findOne({ vetId });
+
+    if (existingV) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    // Create a new veterinarian user
+    const newVeterinarian = new Veterinarian({
+      name,
+      vetId,
+      password,
+      phoneNumber,
+    });
+
+    // Generate and store the verification token (if needed)
+    newVeterinarian.verificationToken = crypto.randomBytes(20).toString("hex");
+
+    // Save the new veterinarian to the database
+    await newVeterinarian.save();
+
+    // Send a response indicating successful registration
+    res
+      .status(201)
+      .json({ message: "Registration successful for veterinarian" });
+  } catch (error) {
+    console.log("Error registering veterinarian", error);
+    res.status(500).json({ message: "Error registering veterinarian" });
+  }
+});
 // Update vet tips
 app.post("/veterinarian/tips/:vetId", async (req, res) => {
   try {

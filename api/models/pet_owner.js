@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 // Define the user schema using mongoose.Schema
-const userSchema = new mongoose.Schema({
+const PetOwnerSchema = new mongoose.Schema({
   // User's name
   name: {
     type: String,
@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
 });
 
 // Create a mongoose model named "User" based on the user schema
-const User = mongoose.model("User", userSchema);
+const PetOwner = mongoose.model("Pet Owner", PetOwnerSchema);
 
 // Export the User model for use in other files
-module.exports = User;
+module.exports = PetOwner;

@@ -32,14 +32,14 @@ const PetOwnerLoginScreen = () => {
 
   // Function to handle user login
   const handleLogin = () => {
-    const user = {
+    const owner = {
       email: email,
       password: password,
     };
 
     // Send a login request to the server
     axios
-      .post("http://localhost:3000/login", user)
+      .post("http://localhost:3000/login", owner)
       .then((response) => {
         // If login is successful, store authToken in AsyncStorage and navigate to "Pet Owner Home Screen"
         const token = response.data.token;
