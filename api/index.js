@@ -187,8 +187,10 @@ app.post("/veterinarian/tips/:vetId", async (req, res) => {
     if (!veterinarian) {
       return res.status(404).json({ message: "Veterinarian not found" });
     }
+    // Add the new tip at the beginning of the tips array
+    veterinarian.tips.unshift({ title, content });
 
-    veterinarian.tips.push({ title, content });
+    //veterinarian.tips.push({ title, content });
     await veterinarian.save();
     res.status(200).json({ message: "Tips added successfully" });
   } catch (error) {
@@ -308,6 +310,34 @@ app.get("/veterinarian/:vetId", async (req, res) => {
     res.status(200).json(veterinarian);
   } catch (error) {
     console.error("Error fetching vet information", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+// Add an endpoint for updating a specific tip
+app.put("/veterinarian/tips/:vetId/:tipId", async (req, res) => {
+  try {
+    const vetId = req.params.vetId;
+    const tipId = req.params.tipId;
+    const { title, content } = req.body;
+
+    const veterinarian = await Veterinarian.findOne({ vetId });
+    if (!veterinarian) {
+      return res.status(404).json({ message: "Veterinarian not found" });
+    }
+
+    const tipIndex = veterinarian.tips.findIndex(tip => tip._id.toString() === tipId);
+    if (tipIndex === -1) {
+      return res.status(404).json({ message: "Tip not found" });
+    }
+
+    // Update the title and content of the specified tip
+    veterinarian.tips[tipIndex].title = title;
+    veterinarian.tips[tipIndex].content = content;
+
+    await veterinarian.save();
+    res.status(200).json({ message: "Tip updated successfully" });
+  } catch (error) {
+    console.error("Error updating tip", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });

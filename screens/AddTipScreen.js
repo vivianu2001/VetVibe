@@ -30,15 +30,42 @@ const AddTipScreen = ({ route, navigation }) => {
         newTip
       );
 
+      // Fetch updated tips after adding a new tip
+      await fetchTips();
+
       setNewTip({ title: "", content: "" });
 
       Alert.alert("Tip Added", "Your tip has been added successfully.");
-      navigation.goBack();
     } catch (error) {
       console.error("Error adding tip:", error);
       Alert.alert("Error", "Failed to add tip. Please try again.");
     }
   };
+
+  const fetchTips = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/veterinarian/${vetId}`
+      );
+      const vetData = response.data;
+      setTips(vetData.tips);
+    } catch (error) {
+      console.error("Error fetching tips:", error);
+    }
+  };
+
+  const handleEditTip = (tip) => {
+    navigation.navigate("Edit Tip Screen", {
+      vetId,
+      tip,
+      onTipUpdated: fetchTips,
+    });
+  };
+
+  useEffect(() => {
+    // Fetch tips when the component mounts
+    fetchTips();
+  }, [vetId]);
 
   const renderTipItem = ({ item }) => (
     <View style={styles.tip}>
@@ -47,12 +74,6 @@ const AddTipScreen = ({ route, navigation }) => {
       <Button title="Edit" onPress={() => handleEditTip(item)} />
     </View>
   );
-
-  const handleEditTip = (tip) => {
-    // Implement navigation to an EditTipScreen with the selected tip information
-    // You can pass the tip information as a parameter to the EditTipScreen
-    // Example: navigation.navigate("EditTipScreen", { vetId, tip });
-  };
 
   return (
     <View style={styles.container}>
